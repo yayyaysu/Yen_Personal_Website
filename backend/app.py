@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS
 from api.routes import api
 from dotenv import load_dotenv
@@ -11,7 +11,11 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 CORS(app)
 
+@app.route('/')
+def home():
+    return jsonify({"message": "Flask is running in Docker!"})
+
 app.register_blueprint(api, url_prefix='/api')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

@@ -1,0 +1,25 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./backend  # 指定 Flask 的 Dockerfile 路徑
+    ports:
+      - "5000:5000"
+    networks:
+      - app-network
+    restart: always  # 確保容器崩潰後自動重啟
+
+  frontend:
+    build:
+      context: ./my-website  # 指定 Vue.js 的 Dockerfile 路徑
+    ports:
+      - "80:80"
+    depends_on:
+      - backend  # 確保 Flask 先啟動
+    networks:
+      - app-network
+    restart: always
+
+networks:
+  app-network:
+    driver: bridge
